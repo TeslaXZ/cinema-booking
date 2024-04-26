@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity(name = "Billboard")
-@Table(name = "Billboard")
+@Table(name = "billboards")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)

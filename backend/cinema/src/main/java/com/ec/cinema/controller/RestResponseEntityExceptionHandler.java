@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
+
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler {
@@ -27,6 +28,12 @@ public class RestResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidBillboardCancellationException.class)
     public ResponseEntity<Object> handlerEntityNotFoundException(InvalidBillboardCancellationException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+   
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handlerEntityNotFoundException( NoSuchElementException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

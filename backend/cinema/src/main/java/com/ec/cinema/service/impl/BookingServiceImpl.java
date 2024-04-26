@@ -1,17 +1,18 @@
 package com.ec.cinema.service.impl;
 
+import com.ec.cinema.domain.dto.booking.BookingDTO;
 import com.ec.cinema.domain.entity.BookingEntity;
 import com.ec.cinema.domain.entity.SeatEntity;
+import com.ec.cinema.helper.mappers.BookingMapper;
 import com.ec.cinema.repository.BookingRepository;
 import com.ec.cinema.service.BookingService;
-import com.ec.cinema.service.SeatService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,37 +20,46 @@ public class BookingServiceImpl implements BookingService {
 
     private final SeatServiceImpl seatService;
     private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
 
     @Override
-    public List<BookingEntity> findAll() {
-        return null;
+    public List<BookingDTO> findAll() {
+        return bookingRepository.findAll().stream().map(bookingMapper:: toBookingDto).toList();
     }
 
     @Override
-    public BookingEntity findById(Long id) {
-        return bookingRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Booking not found"));
+    public BookingDTO findById(Long id) {
+       BookingEntity booking = bookingRepository.findById(id).orElseThrow(()-> new NoSuchElementException("No booking whit id: " + id));
+       return bookingMapper.toBookingDto(booking);
     }
 
     @Override
-    public BookingEntity create(BookingEntity bookingEntity) {
-        return null;
+    public BookingDTO create(BookingDTO bookingDTO) {
+        BookingEntity bookingCreated = bookingRepository.save(bookingMapper.toBooking(bookingDTO));
+        return bookingMapper.toBookingDto(bookingCreated);
     }
 
     @Override
-    public BookingEntity update(BookingEntity bookingEntity) {
-        return null;
+    @Transactional
+    public BookingDTO update(BookingDTO bookingDTO) {
+        BookingEntity booking = bookingMapper.toBooking(findById(bookingDTO.getId()));
+        booking.setDate(bookingDTO.getDate());
+        booking.setSeat(booking.getSeat());
+        return bookingMapper.toBookingDto(booking);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        BookingEntity booking = findById(id);
+        BookingEntity booking = bookingMapper.toBooking(findById(id));
         booking.setStatus(false);
+        
     }
 
     @Override
+    @Transactional
     public void disableSeatAndCancelBooking(Long bookingId) {
-        BookingEntity booking = findById(bookingId);
+        BookingEntity booking = bookingMapper.toBooking(findById(bookingId));
         SeatEntity seat = booking.getSeat();
         if(seat == null){
             throw new EntityNotFoundException("Seat not found");
@@ -61,7 +71,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingEntity> findBookingsByBillboardId(Long billboardId) {
-        return bookingRepository.findBookingsByBillboardId(billboardId);
+    public List<BookingDTO> findBookingsByBillboardId(Long billboardId) {
+        List<BookingEntity> bookingList = bookingRepository.findBookingsByBillboardId(billboardId);
+         return bookingList.stream().map(bookingMapper :: toBookingDto).toList();
     }
 }

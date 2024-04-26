@@ -1,12 +1,13 @@
 package com.ec.cinema.service;
 
-import com.ec.cinema.domain.entity.BookingEntity;
+import com.ec.cinema.domain.dto.booking.BookingDTO;
+
 
 import java.util.List;
 
-public interface BookingService extends CrudGeneratorService<BookingEntity,Long>{
+public interface BookingService extends CrudGeneratorService<BookingDTO,Long>{
     void disableSeatAndCancelBooking(Long seatId);
-    List<BookingEntity> findBookingsByBillboardId(Long billboardId);
+    List<BookingDTO> findBookingsByBillboardId(Long billboardId);
 
 
 }
