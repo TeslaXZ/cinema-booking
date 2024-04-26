@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -43,7 +42,7 @@ public class SeatServiceImpl implements SeatService {
     public SeatDTO update(SeatDTO seatDTO) {
         SeatEntity seat = seatRepository.findById(seatDTO.getId()).orElseThrow(()->  new NoSuchElementException("No seat whit id: " + seatDTO.getId()));
             seat.setNumber(seatDTO.getNumber());
-            seat.setHallNumber(seatDTO.getRowNumber());
+            seat.setHallNumber(seatDTO.getHallNumber());
             seatRepository.save(seat);
             return seatMapper.toSeatDto(seat);
         

@@ -15,7 +15,7 @@ public class SeatDTO extends BaseDTO {
     private Short number;
     @NotNull
     @Min(value = 1)
-    private Short rowNumber;
+    private Short hallNumber;
     @NotNull
     private RoomDTO room;
 }

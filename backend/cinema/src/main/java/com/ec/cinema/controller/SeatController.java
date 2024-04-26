@@ -3,7 +3,6 @@ package com.ec.cinema.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
