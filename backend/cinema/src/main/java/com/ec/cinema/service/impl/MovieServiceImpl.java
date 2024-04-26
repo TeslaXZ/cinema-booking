@@ -29,8 +29,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO findById(Long id) {
-        MovieEntity entity = movieRepository.findById(id).orElseThrow(()-> new NoSuchElementException("No movie whith id: " + id));
-        return movieMapper.toMovieDto(entity);
+        MovieEntity movie = movieRepository.findById(id).orElseThrow(()-> new NoSuchElementException("No movie whith id: " + id));
+        return movieMapper.toMovieDto(movie);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional
     public MovieDTO update(MovieDTO movieDTO) {
-        MovieEntity movie = movieMapper.toMovie(findById(movieDTO.getId()));
+        MovieEntity movie = movieRepository.findById(movieDTO.getId()).orElseThrow(()-> new NoSuchElementException("No movie whith id: " + movieDTO.getId()));
         movie.setName(movieDTO.getName());
         movie.setGenre(movieDTO.getGenre());
         movie.setAllowedAge(movieDTO.getAllowedAge());
@@ -53,7 +53,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional
     public void delete(Long id) {
-      MovieEntity movie = movieMapper.toMovie(findById(id));
+        MovieEntity movie = movieRepository.findById(id).orElseThrow(()-> new NoSuchElementException("No movie whith id: " + id));
       movie.setStatus(false);
 
     }

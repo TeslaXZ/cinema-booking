@@ -30,28 +30,28 @@ public class CustomerController {
     private final CustomerServiceImpl customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerDTO> createRoom(@RequestBody @Valid CustomerDTO CustomerDTO){
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO CustomerDTO){
         CustomerDTO createdRoom = customerService.create(CustomerDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdRoom.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getAllRooms(){
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers(){
         return ResponseEntity.ok(customerService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> getRoomById(@PathVariable Long id){
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id){
         return ResponseEntity.ok(customerService.findById(id));
     } 
     @PutMapping
-    public ResponseEntity<CustomerDTO> updateRoom(@RequestBody @Valid CustomerDTO CustomerDTO){
+    public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody @Valid CustomerDTO CustomerDTO){
         return ResponseEntity.ok(customerService.update(CustomerDTO)); 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomerDTO> deactiveRoom(@PathVariable Long id){
+    public ResponseEntity<CustomerDTO> deactiveCustomer(@PathVariable Long id){
         customerService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

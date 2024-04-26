@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ec.cinema.domain.dto.room.RoomDTO;
+import com.ec.cinema.domain.dto.room.RoomOccupancyDTO;
 import com.ec.cinema.service.impl.RoomServiceImpl;
 
 
@@ -57,5 +58,9 @@ public class RoomController {
         roomService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    
+    @GetMapping("/seatsAvailability")
+    public ResponseEntity<List<RoomOccupancyDTO>> findAvailableAndOccupiedSeatsByRoom() {
+        return ResponseEntity.ok(roomService.findAvailableAndOccupiedSeatsByRoom());
+    }
 }

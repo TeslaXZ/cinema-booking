@@ -37,20 +37,19 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity customerCreated = customerRepository.save(customerMapper.toCustomer(customerDTO));
         return customerMapper.toCustomerDTO(customerCreated); 
     }
-
-    @Override
     @Transactional
+    @Override
     public CustomerDTO update(CustomerDTO customerDTO) {
-       CustomerEntity customer = customerMapper.toCustomer(findById(customerDTO.getId()));
+        CustomerEntity customer = customerRepository.findById(customerDTO.getId()).orElseThrow(()-> new NoSuchElementException("No customer whith id: " + customerDTO.getId()));
        customer.setPhoneNumber(customerDTO.getPhoneNumber());
        customer.setEmail(customerDTO.getEmail());
        return customerMapper.toCustomerDTO(customer);
     }
 
-    @Override
     @Transactional
+    @Override
     public void delete(Long id) {
-        CustomerEntity customer = customerMapper.toCustomer(findById(id));
+        CustomerEntity customer = customerRepository.findById(id).orElseThrow(()-> new NoSuchElementException("No customer whith id: " + id));
         customer.setStatus(false);
     }
 

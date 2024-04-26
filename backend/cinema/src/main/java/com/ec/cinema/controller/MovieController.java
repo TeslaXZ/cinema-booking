@@ -31,28 +31,28 @@ public class MovieController {
     private final MovieServiceImpl movieService;
 
     @PostMapping
-    public ResponseEntity<MovieDTO> createRoom(@RequestBody @Valid MovieDTO MovieDTO){
+    public ResponseEntity<MovieDTO> createMovie(@RequestBody @Valid MovieDTO MovieDTO){
         MovieDTO createdRoom = movieService.create(MovieDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdRoom.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<MovieDTO>> getAllRooms(){
+    public ResponseEntity<List<MovieDTO>> getAllMovie(){
         return ResponseEntity.ok(movieService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieDTO> getRoomById(@PathVariable Long id){
+    public ResponseEntity<MovieDTO> getMovieById(@PathVariable Long id){
         return ResponseEntity.ok(movieService.findById(id));
     } 
     @PutMapping
-    public ResponseEntity<MovieDTO> updateRoom(@RequestBody @Valid MovieDTO MovieDTO){
+    public ResponseEntity<MovieDTO> updateMovie(@RequestBody @Valid MovieDTO MovieDTO){
         return ResponseEntity.ok(movieService.update(MovieDTO)); 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MovieDTO> deactiveRoom(@PathVariable Long id){
+    public ResponseEntity<MovieDTO> deactiveMovie(@PathVariable Long id){
         movieService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

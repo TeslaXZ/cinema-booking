@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity(name = "Seat")
-@Table(name = "seats")
+@Table(name = "Seats")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
@@ -21,7 +21,7 @@ public class SeatEntity extends BaseEntity {
     private short number;
     @NotNull
     @Min(0)
-    private short rowNumber;
+    private short hallNumber;
     @ManyToOne
     @JoinColumn(name = "room_id")
     private RoomEntity room;

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -40,9 +41,9 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public SeatDTO update(SeatDTO seatDTO) {
-        SeatEntity seat = seatMapper.toSeat(findById(seatDTO.getId()));
+        SeatEntity seat = seatRepository.findById(seatDTO.getId()).orElseThrow(()->  new NoSuchElementException("No seat whit id: " + seatDTO.getId()));
             seat.setNumber(seatDTO.getNumber());
-            seat.setRowNumber(seatDTO.getRowNumber());
+            seat.setHallNumber(seatDTO.getRowNumber());
             seatRepository.save(seat);
             return seatMapper.toSeatDto(seat);
         
@@ -51,8 +52,9 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public void delete(Long id) {
-        SeatEntity seat = seatMapper.toSeat(findById(id));
+        SeatEntity seat = seatRepository.findById(id).orElseThrow(()->  new NoSuchElementException("No seat whit id: " + id));
         seat.setStatus(false);
         
     }
+   
 }

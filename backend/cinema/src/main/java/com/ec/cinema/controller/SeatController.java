@@ -3,6 +3,7 @@ package com.ec.cinema.controller;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class SeatController {
 
     private final SeatServiceImpl seatService;
 
-    @PostMapping(value = "save", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "save")
     public ResponseEntity<SeatDTO> createSeat(@RequestBody @Valid SeatDTO seatDTO){
         SeatDTO createdSeat = seatService.create(seatDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdSeat.getId()).toUri();
@@ -55,7 +56,6 @@ public class SeatController {
     public ResponseEntity<SeatDTO> deactiveSeat(@PathVariable Long id){
         seatService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        
     }
 
 

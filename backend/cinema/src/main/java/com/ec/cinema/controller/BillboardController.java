@@ -3,6 +3,7 @@ package com.ec.cinema.controller;
 import java.net.URI;
 import java.util.List;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,29 +34,35 @@ public class BillboardController {
     private final BillboardServiceImpl billboardService;
 
     @PostMapping
-    public ResponseEntity<BillboardDTO> createRoom(@RequestBody @Valid BillboardDTO BillboardDTO){
+    public ResponseEntity<BillboardDTO> createBillboard(@RequestBody @Valid BillboardDTO BillboardDTO){
         BillboardDTO createdRoom = billboardService.create(BillboardDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdRoom.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<BillboardDTO>> getAllRooms(){
+    public ResponseEntity<List<BillboardDTO>> getAllBillboards(){
         return ResponseEntity.ok(billboardService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BillboardDTO> getRoomById(@PathVariable Long id){
+    public ResponseEntity<BillboardDTO> getBillboardById(@PathVariable Long id){
         return ResponseEntity.ok(billboardService.findById(id));
     } 
     @PutMapping
-    public ResponseEntity<BillboardDTO> updateRoom(@RequestBody @Valid BillboardDTO BillboardDTO){
+    public ResponseEntity<BillboardDTO> updateBillboard(@RequestBody @Valid BillboardDTO BillboardDTO){
         return ResponseEntity.ok(billboardService.update(BillboardDTO)); 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<BillboardDTO> deactiveRoom(@PathVariable Long id){
+    public ResponseEntity<BillboardDTO> deactiveBillboard(@PathVariable Long id){
         billboardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/cancelBillboardAndBookings")
+    public ResponseEntity<Void> cancelBillboardAndBookings(@RequestParam Long id){
+        billboardService.cancelBillboardAndBookings(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

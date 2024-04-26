@@ -35,19 +35,22 @@ public class BillboardServiceImpl implements BillboardService {
     public void cancelBillboardAndBookings(Long billboardId) {
         // Validación de la fecha de la cartelera
         cancelBillboardValidation(billboardId);
-        //Lista de reservas de esta cartelera
+
         List<BookingEntity> bookings = bookingService.findBookingsByBillboardId(billboardId).stream().map(bookingMapper :: toBooking).toList();
         for(BookingEntity booking : bookings){
             SeatEntity seat = booking.getSeat();
             CustomerEntity customer = booking.getCustomer();
-            //Imprime en la consola los clientes afectados por esta cancelacion
-            System.out.println("Cliente afectado: " + customer.getName() + " " + customer.getLastname());
-            //Se cancela la reserva con safe delete para que igualmente quede registro en la bd
-            bookingService.delete(booking.getId());
-            //Se desactiva la butaca para que pueda volver a ser tomada
-            seatService.delete(seat.getId());
+            BillboardEntity billboard = billboardRepository.findById(billboardId).orElseThrow(() -> new NoSuchElementException("No Billboard whit id: "+ billboardId));
 
+            bookingService.delete(booking.getId());
+            seatService.delete(seat.getId());
+            billboard.setStatus(false);
+            
+           System.out.println("Customers affectes: "+ customer.getName() + " " + customer.getLastname());
+              
         }
+
+    
     }
 
     @Override
@@ -78,7 +81,7 @@ public class BillboardServiceImpl implements BillboardService {
     @Override
     @Transactional
     public BillboardDTO update(BillboardDTO billboardDTO) {
-        BillboardEntity billboard =  billboardMapper.toBillboard(findById(billboardDTO.getId()));
+        BillboardEntity billboard = billboardRepository.findById(billboardDTO.getId()).orElseThrow(() -> new NoSuchElementException("No Billboard whit id: "+ billboardDTO.getId()));
         billboard.setDate(billboardDTO.getDate());
         billboard.setStartTime(billboardDTO.getStartTime());
         billboard.setEndTime(billboardDTO.getEndTime());
@@ -89,7 +92,7 @@ public class BillboardServiceImpl implements BillboardService {
     @Override
     @Transactional
     public void delete(Long id) {
-        BillboardEntity billboard = billboardMapper.toBillboard(findById(id));
+        BillboardEntity billboard = billboardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Billboard whit id: "+ id));
         billboard.setStatus(false);
     }
 }
