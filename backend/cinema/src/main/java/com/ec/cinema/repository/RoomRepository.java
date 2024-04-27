@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
-    @Query("SELECT s.room.name AS roomName, " +
-            "SUM(CASE WHEN b IS NULL THEN 1 ELSE 0 END) AS availableSeats, " +
-            "SUM(CASE WHEN b IS NOT NULL THEN 1 ELSE 0 END) AS occupiedSeats " +
-            "FROM Seat s " +
-            "JOIN s.room r " +
-            "LEFT JOIN Booking b ON b.seat = s AND b.date = :currentDate " +
-            "GROUP BY r.name")
+    @Query("SELECT r.id AS roomId, s.room.name AS roomName, " +
+       "SUM(CASE WHEN b IS NULL THEN 1 ELSE 0 END) AS availableSeats, " +
+       "SUM(CASE WHEN b IS NOT NULL THEN 1 ELSE 0 END) AS occupiedSeats " +
+       "FROM Seat s " +
+       "JOIN s.room r " +
+       "LEFT JOIN Booking b ON b.seat = s AND b.date = :currentDate " +
+       "GROUP BY r.id, r.name")
 List<Object[]> findAvailableAndOccupiedSeatsByRoom(@Param("currentDate") LocalDate currentDate);
 }
