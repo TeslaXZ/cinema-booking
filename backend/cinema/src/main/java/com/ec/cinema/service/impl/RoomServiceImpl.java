@@ -60,12 +60,15 @@ public class RoomServiceImpl implements RoomService  {
 
     @Override
     public List<RoomOccupancyDTO> findAvailableAndOccupiedSeatsByRoom() {
+      
         List<Object[]> availableAndOccupiedSeats = roomRepository.findAvailableAndOccupiedSeatsByRoom(LocalDate.now());
         return availableAndOccupiedSeats.stream()
-                .map(availableAndOccupiedSeat -> new RoomOccupancyDTO(
-                    (String)availableAndOccupiedSeat[0],
-                    (Long)availableAndOccupiedSeat[1],
-                    (Long)availableAndOccupiedSeat[2]))
-                    .collect(Collectors.toList());
+            .map(availableAndOccupiedSeat -> new RoomOccupancyDTO(
+                (Long) availableAndOccupiedSeat[0], 
+                (String) availableAndOccupiedSeat[1], 
+                (Long) availableAndOccupiedSeat[2], 
+                (Long) availableAndOccupiedSeat[3] 
+            ))
+            .collect(Collectors.toList());
     }
 }

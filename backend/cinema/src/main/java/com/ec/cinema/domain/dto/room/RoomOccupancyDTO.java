@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomOccupancyDTO {
+    private Long id;
     private String roomName;
     private long availableSeats;
     private long occupiedSeats;

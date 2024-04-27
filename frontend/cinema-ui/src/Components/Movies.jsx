@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { apiBaseUrl } from '../ApiConfig';
 
 const MovieComponent = () => {
     const [movies, setMovies] = useState([]);
@@ -9,12 +10,9 @@ const MovieComponent = () => {
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
 
-    const apiBaseUrl = 'http://localhost:8080/api/v1/movie';
-
-    // Obtener todas las películas
     const fetchMovies = async () => {
         try {
-            const response = await axios.get(apiBaseUrl);
+            const response = await axios.get(`${apiBaseUrl}/movie`);
             const filteredMovies = response.data.filter(movie => movie.status);
             setMovies(filteredMovies);
         } catch (error) {
@@ -22,10 +20,10 @@ const MovieComponent = () => {
         }
     };
 
-    // Obtener una película por su ID
+
     const fetchMovieById = async (id) => {
         try {
-            const response = await axios.get(`${apiBaseUrl}/${id}`);
+            const response = await axios.get(`${apiBaseUrl}/movie/${id}`);
             setMovie(response.data);
             setShowDetailModal(true);
         } catch (error) {
@@ -33,10 +31,9 @@ const MovieComponent = () => {
         }
     };
 
-    // Crear una nueva película
     const createMovie = async (newMovie) => {
         try {
-            const response = await axios.post(apiBaseUrl, newMovie);
+            const response = await axios.post(`${apiBaseUrl}/movie`, newMovie);
             setMovies([...movies, response.data]);
             fetchMovies();
         } catch (error) {
@@ -44,17 +41,16 @@ const MovieComponent = () => {
         }
     };
 
-    // Eliminar una película
+ 
     const deleteMovie = async (id) => {
         try {
-            await axios.delete(`${apiBaseUrl}/${id}`);
+            await axios.delete(`${apiBaseUrl}/movie/${id}`);
             setMovies(movies.filter((movie) => movie.id !== id));
         } catch (error) {
             console.error('Error deleting movie:', error);
         }
     };
 
-    // Controlar modales
     const handleShowDetailModal = (movie) => {
         setMovie(movie);
         setShowDetailModal(true);
@@ -80,7 +76,6 @@ const MovieComponent = () => {
         <div className="container mt-4">
             <h1 className="mb-4">Películas</h1>
 
-            {/* Renderiza la lista de películas */}
             <ul className="list-group mb-4">
                 {movies.map((movie) => (
                     <li key={movie.id} className="list-group-item d-flex justify-content-between align-items-center">
@@ -95,10 +90,10 @@ const MovieComponent = () => {
                 ))}
             </ul>
 
-            {/* Botón para abrir el modal de creación de películas */}
+        
             <Button variant="primary" onClick={handleShowCreateModal}>Ingresar película</Button>
 
-            {/* Modal para mostrar los detalles de la película */}
+            
             <Modal show={showDetailModal} onHide={handleCloseDetailModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Detalles de la película</Modal.Title>
@@ -120,7 +115,7 @@ const MovieComponent = () => {
                 </Modal.Footer>
             </Modal>
 
-            {/* Modal para ingresar una nueva película */}
+            
             <Modal show={showCreateModal} onHide={handleCloseCreateModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Ingresar película</Modal.Title>
@@ -133,7 +128,6 @@ const MovieComponent = () => {
                             genre: event.target.genre.value,
                             allowedAge: event.target.allowedAge.value,
                             lengthMinutes: event.target.lengthMinutes.value,
-                            status: true // Establece el estado como true por defecto
                         };
                         createMovie(newMovie);
                         handleCloseCreateModal();

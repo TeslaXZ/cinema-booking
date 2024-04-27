@@ -1,12 +1,12 @@
 INSERT INTO Movies ( status, allowed_age, genre, length_minutes, name)
-VALUES ( true, 18, 'HORROR', 120, 'CHUCKY'),
-       ( true, 12, 'COMEDY', 120, 'MI POBRE ANGELITO'),
-       ( true, 18, 'ACTION', 120, 'RAMBO'),
-       ( true, 18, 'HORROR', 110, 'EL RESPLANDOR'),
+VALUES ( true, 18, 'HORROR', 120, 'La masacre de texas'),
+       ( true, 12, 'COMEDY', 120, 'Jack y Jill'),
+       ( true, 18, 'ACTION', 120, 'Mision imposible'),
+       ( true, 18, 'HORROR', 110, 'El resplandor'),
        ( true, 18, 'HORROR', 105, 'IT'),
-       ( true, 16, 'HORROR', 95, 'SILENT HILL'),
-       ( true, 18, 'HORROR', 100, 'ANABELLE'),
-       ( true, 16, 'HORROR', 98, 'INSIDIOUS');
+       ( true, 16, 'HORROR', 95, 'Silent Hill'),
+       ( true, 18, 'HORROR', 100, 'Anabelle'),
+       ( true, 16, 'ADVENTURE', 98, 'Avatar');
 
 
 INSERT INTO Rooms (status, name, number)
