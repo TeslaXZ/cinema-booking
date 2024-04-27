@@ -5,7 +5,7 @@ import Billboard from './Components/Billboard';
 import Booking from './Components/Booking'
 import Customer from './Components/Customer'
 import Room from './Components/Room'
-import './App.css'; // Importa estilos personalizados, si tienes
+import './App.css';
 
 function App() {
     return (
